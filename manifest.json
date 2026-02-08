@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Faithshield",
-  "description": "Redirects users from blacklisted sites to a customizable emergency page. Intended to help users flee from lust. Developed by James Evolution, a Christian software developer.",
+  "description": "Redirects users from adult websites to a customizable emergency page. Designed to help users flee from lust. Developed by James Z.",
   "version": "1.0",
 
   "action": {
@@ -32,16 +32,6 @@
   "host_permissions": [
     "<all_urls>"
   ],
-
-  "declarative_net_request": {
-    "rule_resources": [
-      {
-        "id": "redirect_rules",
-        "enabled": true,
-        "path": "rules.json"
-      }
-    ]
-  },
 
   "web_accessible_resources": [
     {
