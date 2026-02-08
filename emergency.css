@@ -1,0 +1,23 @@
+.verse-glow {
+	color: #f5d56b;
+	font-style: italic;
+	text-shadow: 0 0 6px rgba(245, 213, 107, 0.45), 0 0 16px rgba(245, 213, 107, 0.3);
+}
+
+.warning-glow {
+	color: #f87171;
+	text-shadow: 0 0 6px rgba(248, 113, 113, 0.55), 0 0 18px rgba(248, 113, 113, 0.35);
+}
+
+.tip-glow {
+	color: #42f878;
+	text-shadow: 0 0 6px rgba(59, 246, 0, 0.55), 0 0 4px rgba(59, 246, 0, 0.55);
+}
+
+.custom-message {
+	text-align: center;
+}
+
+.custom-message .lead {
+	font-size: 1.1rem;
+}

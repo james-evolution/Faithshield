@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blacklist</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <!-- Popup shell -->
+  <main class="panel">
+    <header class="panel-header">
+      <h1>Blacklist</h1>
+      <p class="subtitle">Add a site to redirect to the emergency page.</p>
+    </header>
+
+    <!-- Add-new-site form -->
+    <form id="add-form" class="add-form">
+      <label for="site-input">Website or domain</label>
+      <div class="input-row">
+        <input id="site-input" name="site" type="text" placeholder="example.com" autocomplete="off" />
+        <button type="submit">Add</button>
+      </div>
+      <p class="help">Tip: paste a full URL or just a domain.</p>
+    </form>
+
+    <!-- Emergency page settings -->
+    <section class="message-section">
+      <div class="list-header">
+        <h2>Emergency Page Settings</h2>
+      </div>
+      <div class="choice-row">
+        <label class="choice">
+          <input type="radio" name="emergency-mode" id="mode-default" value="default" />
+          Use default message
+        </label>
+        <label class="choice">
+          <input type="radio" name="emergency-mode" id="mode-custom" value="custom" />
+          Use custom message
+        </label>
+      </div>
+      <label for="message-input">Custom message</label>
+      <textarea id="message-input" rows="4" placeholder="Type the message you want to see."></textarea>
+      <div class="action-row">
+        <button id="save-message" type="button">Save message</button>
+        <span class="help">Saved in extension storage.</span>
+      </div>
+    </section>
+
+    <!-- Current blocked sites list -->
+    <section class="list-section">
+      <div class="list-header">
+        <h2>Blocked sites</h2>
+        <span id="count">0</span>
+      </div>
+      <ul id="site-list" class="site-list"></ul>
+    </section>
+
+    <!-- Status messages (errors and confirmations) -->
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </main>
+
+  <script src="popup.js"></script>
+</body>
+</html>

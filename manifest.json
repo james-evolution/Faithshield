@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "Site Redirector",
+  "description": "Redirects specified websites to a safe alternative.",
+  "version": "1.0",
+
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Site Redirector"
+  },
+
+  "incognito": "split",
+
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess"
+  ],
+
+  "host_permissions": [
+    "<all_urls>"
+  ],
+
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "redirect_rules",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["emergency.html", "emergency.js", "emergency.css"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
