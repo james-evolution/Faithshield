@@ -105,19 +105,20 @@ function renderEntries(entries) {
     list.innerHTML = "";
     if (!entries.length) {
         const empty = document.createElement("li");
+        empty.className = "list-group-item bg-dark text-secondary border-secondary small";
         empty.textContent = "No blocked sites yet.";
-        empty.style.color = "#9fb0c0";
-        empty.style.fontSize = "12px";
         list.appendChild(empty);
     } else {
         entries.forEach((entry) => {
             const item = document.createElement("li");
+            item.className = "list-group-item d-flex justify-content-between align-items-center bg-dark text-light border-secondary";
             const label = document.createElement("span");
+            label.className = "small text-truncate";
             label.textContent = entry.domain;
 
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
-            removeBtn.className = "remove-btn";
+            removeBtn.className = "btn btn-outline-danger btn-sm";
             removeBtn.textContent = "Remove";
             removeBtn.addEventListener("click", () => removeEntry(entry.id));
 
@@ -126,7 +127,7 @@ function renderEntries(entries) {
         });
     }
 
-    count.textContent = String(entries.length);
+    count.textContent = String(entries.length) + " sites blacklisted";
 }
 
 // Load emergency page settings for mode and custom text.
