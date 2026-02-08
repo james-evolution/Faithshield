@@ -70,7 +70,9 @@ Faithshield requires:
 4. Select the extension folder:
    - `faithshield_extension`
 5. Confirm the extension is installed.
-6. Click the extension icon to open settings and manage your blacklist.
+6. Click **Details**.
+7. Toggle on **Pin to toolbar** and **Allow in private / incognito**.
+8. Click the extension icon to open settings and manage your blacklist.
 
 ## Usage
 
