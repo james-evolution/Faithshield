@@ -1,6 +1,7 @@
 // Storage keys for persistent blacklist data and rule IDs.
 const STORAGE_KEY = "blacklistEntries";
 const NEXT_ID_KEY = "nextRuleId";
+const DEFAULT_LIST_KEY = "defaultSeedList";
 const RULE_ID_START = 1000;
 const SOURCE_SEED = "seed";
 const SOURCE_USER = "user";
@@ -121,6 +122,7 @@ async function saveEntries(entries, nextId) {
 async function seedDefaultBlacklist() {
     const { entries, nextId } = await getStoredEntries();
     if (DEFAULT_BLACKLIST.length === 0) {
+        await chrome.storage.local.set({ [DEFAULT_LIST_KEY]: [] });
         return { entries, nextId };
     }
 
@@ -129,8 +131,11 @@ async function seedDefaultBlacklist() {
         .filter((domain) => isValidDomain(domain));
     const uniqueDomains = [...new Set(domains)];
     if (!uniqueDomains.length) {
+        await chrome.storage.local.set({ [DEFAULT_LIST_KEY]: [] });
         return { entries, nextId };
     }
+
+    await chrome.storage.local.set({ [DEFAULT_LIST_KEY]: uniqueDomains });
 
     const defaultDomainSet = new Set(uniqueDomains);
     const normalizedEntries = entries.map((entry) => {

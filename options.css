@@ -15,6 +15,25 @@ body {
   font-family: "Space Grotesk", "Segoe UI", sans-serif;
 }
 
+.navbar {
+  background: rgba(10, 14, 20, 0.9);
+  border-bottom: 1px solid var(--panel-border);
+}
+
+.navbar-brand {
+  letter-spacing: 4px;
+  font-weight: 600;
+}
+
+.nav-link {
+  color: #9fb0c0;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: #e7edf2;
+}
+
 .options-shell {
   min-height: 100vh;
 }
@@ -32,6 +51,21 @@ body {
   border-color: var(--panel-border);
   box-shadow: 0 16px 28px var(--panel-glow);
   color: #e7edf2;
+}
+
+.list-group-item {
+  background: transparent;
+  color: #e7edf2;
+}
+
+#custom-site-list,
+#default-site-list {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.default-badge {
+  margin-left: auto;
 }
 
 .form-control,

@@ -1,1 +1,5 @@
-// Reserved for future logic (analytics, toggles, Firebase sync, etc.)
+chrome.action.onClicked.addListener(() => {
+	if (chrome.runtime.openOptionsPage) {
+		chrome.runtime.openOptionsPage();
+	}
+});

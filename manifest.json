@@ -5,11 +5,14 @@
   "version": "1.0",
 
   "action": {
-    "default_popup": "popup.html",
-    "default_title": "Site Redirector",
+    "default_title": "Faithshield",
     "default_icon": {
       "128": "logo_faithshield.png"
     }
+  },
+
+  "background": {
+    "service_worker": "background.js"
   },
 
   "icons": {
