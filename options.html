@@ -12,29 +12,33 @@
     <a class="navbar-brand" href="options.html">FAITHSHIELD</a>
     <div class="navbar-nav ms-auto">
       <a class="nav-link active" href="options.html">Home</a>
-      <a class="nav-link" href="emergencysettings.html">Emergency Page</a>
+      <a class="nav-link" href="emergencysettings.html">Emergency Settings</a>
       <a class="nav-link" href="blacklist.html">Blacklist</a>
     </div>
   </nav>
 
   <main class="options-shell py-4">
-    <div class="container">
-      <div class="card border-secondary shadow-sm">
+    <div class="container-fluid px-4 options-home-container">
+      <div class="mt-4">
         <div class="card-body">
-          <h1 class="h4 mb-2">Settings</h1>
-          <p class="text-secondary mb-4">Use the navigation bar above to navigate to the relevant settings pages. Descriptions of what each page is for is provided below.</p>
+          <h1 class="h4 mb-2">How to use this extension</h1>
+          <p class="text-secondary mb-4">In the navigation bar above, you'll find links to two different pages.</p>
 
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item bg-transparent border-0">
-              <h2 class="h6 mb-1">Emergency Page</h2>
-              <p class="small text-secondary mb-0">Customize the message shown when a blocked site redirects you to safety.</p>
-            </li>
-            
-            <li class="list-group-item bg-transparent border-0">
-              <h2 class="h6 mb-1 mt-2">Blacklist</h2>
-              <p class="small text-secondary mb-0">Add your own blocked sites and review the default list.</p>
-            </li>
-          </ul>
+          <div class="row g-4 options-page-grid">
+            <div class="col-12 col-lg-6">
+              <div class="options-page-card">
+                <img src="image_previews/emergency_settings.png" alt="Screenshot of Emergency Settings page" class="img-fluid rounded options-preview-image" />
+                <p class="small text-secondary options-preview-caption">This is where you can customize the emergency page you are redirected to when attempting to visit a blacklisted site.</p>
+              </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+              <div class="options-page-card">
+                <img src="image_previews/blacklist_settings.png" alt="Screenshot of Blacklist page" class="img-fluid rounded options-preview-image" />
+                <p class="small text-secondary options-preview-caption">This is where you can add sites and keywords to the blacklist, as well as review which sites are blocked by default.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -53,6 +53,41 @@ body {
   color: #e7edf2;
 }
 
+.options-preview-image {
+  max-width: 100%;
+}
+
+.options-page-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--panel-border);
+  background: rgba(15, 21, 30, 0.55);
+}
+
+.options-preview-caption {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.options-page-grid .options-preview-image {
+  width: 100%;
+  max-width: none;
+}
+
+.options-home-container {
+  max-width: 1600px;
+  width: 94%;
+}
+
+@media (max-width: 1199.98px) {
+  .options-home-container {
+    width: 96%;
+  }
+}
+
 .list-group-item {
   background: transparent;
   color: #e7edf2;
@@ -73,6 +108,17 @@ body {
   background-color: var(--field-bg);
   border-color: var(--field-border);
   color: #e7edf2;
+}
+
+.form-select {
+  background-color: var(--field-bg);
+  border-color: var(--field-border);
+  color: #e7edf2;
+}
+
+.form-select:focus {
+  border-color: #5ce1b5;
+  box-shadow: 0 0 0 0.2rem var(--field-focus);
 }
 
 .form-control::placeholder {
@@ -100,6 +146,33 @@ body {
 .form-check-input:checked {
   background-color: #5ce1b5;
   border-color: #5ce1b5;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  background-color: #263141;
+  height: 0.5rem;
+  border-radius: 999px;
+}
+
+.form-range::-webkit-slider-thumb {
+  background-color: #5ce1b5;
+  border: 2px solid #0f151e;
+  width: 1rem;
+  height: 1rem;
+  margin-top: -0.25rem;
+}
+
+.form-range::-moz-range-track {
+  background-color: #263141;
+  height: 0.5rem;
+  border-radius: 999px;
+}
+
+.form-range::-moz-range-thumb {
+  background-color: #5ce1b5;
+  border: 2px solid #0f151e;
+  width: 1rem;
+  height: 1rem;
 }
 
 .keyword-chip-list {
@@ -181,16 +254,21 @@ body {
   overflow: hidden;
   border: 1px solid var(--panel-border);
   background: #0b1016;
+  --preview-scale: 0.85;
 }
 
 .preview-frame {
   display: block;
-  width: 131.58%;
-  height: 131.58%;
+  width: calc(100% / var(--preview-scale));
+  height: calc(100% / var(--preview-scale));
   border: 0;
-  transform: scale(0.76);
+  transform: scale(var(--preview-scale));
   transform-origin: top left;
   overflow: hidden;
+}
+
+.preview-scale {
+  margin-top: 12px;
 }
 
 @media (max-width: 991.98px) {

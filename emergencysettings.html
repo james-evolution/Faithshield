@@ -14,7 +14,7 @@
         <a class="navbar-brand" href="options.html">FAITHSHIELD</a>
         <div class="navbar-nav ms-auto">
             <a class="nav-link" href="options.html">Home</a>
-            <a class="nav-link active" href="emergencysettings.html">Emergency Page</a>
+            <a class="nav-link active" href="emergencysettings.html">Emergency Settings</a>
             <a class="nav-link" href="blacklist.html">Blacklist</a>
         </div>
     </nav>
@@ -23,14 +23,14 @@
         <div class="container-fluid px-4 emergency-settings-container">
             <div class="card border-secondary shadow-sm">
                 <div class="card-body">
-                    <div
-                        class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
-                        <div>
-                            <h1 class="h4 mb-1">Emergency Page Settings</h1>
-                            <p class="small text-secondary mb-0">Customize the appearance of the emergency page for site redirects.</p>
-                        </div>
-                        <span id="status" class="small text-warning" role="status" aria-live="polite"></span>
+                    <div class="text-center mb-3">
+                        <h1 class="h4 mb-1">Emergency Settings</h1>
+                        <p class="small text-secondary mb-0">Customize the appearance of the page blacklisted sites are redirected to.</p>
                     </div>
+
+                    <hr class="border-secondary my-3" />
+
+                    <span id="status" class="small text-warning" role="status" aria-live="polite"></span>
 
                     <div class="row g-4 emergency-settings-layout">
                         <div class="col-12 col-lg-5">
@@ -101,10 +101,33 @@
                                     <div class="form-text text-secondary">0% is fully transparent, 100% is solid black.</div>
                                 </div>
 
-                                <div class="d-flex flex-wrap align-items-center gap-2 mt-3 mb-2">
-                                    <button id="save-message" type="button" class="btn btn-outline-warning">Save changes</button>
+                                <hr class="border-secondary my-3" />
+
+                                <div class="settings-section">
+                                    <h2 class="h6 mb-2">Audio player</h2>
+                                    <div class="d-grid gap-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="audio-mode" id="audio-default"
+                                                value="default" />
+                                            <label class="form-check-label" for="audio-default">Use default SoundCloud track</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="audio-mode" id="audio-custom"
+                                                value="custom" />
+                                            <label class="form-check-label" for="audio-custom">Use a custom SoundCloud link</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <label class="form-label small text-secondary" for="audio-url">SoundCloud track URL</label>
+                                        <input class="form-control" id="audio-url" type="url"
+                                            placeholder="https://soundcloud.com/artist/track" />
+                                    </div>
                                 </div>
-                                <span class="small text-secondary">Changes are saved in extension storage.</span>
+
+                                <div class="d-flex flex-wrap align-items-center gap-2 mt-4 mb-0">
+                                    <button id="save-message" type="button" class="btn btn-outline-success">Save changes</button>
+                                </div>
                             </div>
                         </div>
 
@@ -114,8 +137,14 @@
                                     <h2 class="h6 mb-0">Live preview</h2>
                                     <a class="btn btn-sm btn-outline-info" href="emergency.html" target="_blank" rel="noopener">Full screen</a>
                                 </div>
-                                <div class="preview-frame-wrap">
+                                <div id="preview-frame-wrap" class="preview-frame-wrap">
                                     <iframe id="preview-frame" class="preview-frame" title="Emergency page preview" scrolling="no"></iframe>
+                                </div>
+                                <div class="preview-scale">
+                                    <label class="form-label small text-secondary" for="preview-scale">
+                                        Preview scale <span id="preview-scale-value">0.85</span>
+                                    </label>
+                                    <input class="form-range" id="preview-scale" type="range" min="0.6" max="1" step="0.01" />
                                 </div>
                             </div>
                         </div>

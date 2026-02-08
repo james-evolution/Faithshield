@@ -4,10 +4,13 @@ const BG_MODE_KEY = "emergencyBackgroundMode";
 const BG_URL_KEY = "emergencyBackgroundUrl";
 const BG_FIT_KEY = "emergencyBackgroundFit";
 const CARD_OPACITY_KEY = "emergencyCardOpacity";
+const AUDIO_MODE_KEY = "emergencyAudioMode";
+const AUDIO_URL_KEY = "emergencyAudioUrl";
 const DEFAULT_MODE = "default";
 const DEFAULT_BG_MODE = "default";
 const DEFAULT_BG_FIT = "cover";
 const DEFAULT_CARD_OPACITY = 40;
+const DEFAULT_AUDIO_MODE = "default";
 
 const modeDefault = document.getElementById("mode-default");
 const modeCustom = document.getElementById("mode-custom");
@@ -19,8 +22,28 @@ const bgUrlInput = document.getElementById("bg-url");
 const bgFitSelect = document.getElementById("bg-fit");
 const cardOpacityInput = document.getElementById("card-opacity");
 const cardOpacityValue = document.getElementById("card-opacity-value");
+const audioDefault = document.getElementById("audio-default");
+const audioCustom = document.getElementById("audio-custom");
+const audioUrlInput = document.getElementById("audio-url");
 const previewFrame = document.getElementById("preview-frame");
+const previewFrameWrap = document.getElementById("preview-frame-wrap");
+const previewScaleInput = document.getElementById("preview-scale");
+const previewScaleValue = document.getElementById("preview-scale-value");
 const status = document.getElementById("status");
+
+function applyPreviewScale(value) {
+  const parsed = Number(value);
+  const scale = Number.isFinite(parsed) ? parsed : 0.85;
+  if (previewFrameWrap) {
+    previewFrameWrap.style.setProperty("--preview-scale", String(scale));
+  }
+  if (previewScaleValue) {
+    previewScaleValue.textContent = scale.toFixed(2);
+  }
+  if (previewScaleInput && previewScaleInput.value !== String(scale)) {
+    previewScaleInput.value = String(scale);
+  }
+}
 
 function collectPreviewSettings() {
   return {
@@ -30,6 +53,8 @@ function collectPreviewSettings() {
     backgroundUrl: bgUrlInput.value.trim(),
     backgroundFit: bgFitSelect.value || DEFAULT_BG_FIT,
     cardOpacity: Number(cardOpacityInput.value),
+    audioMode: audioCustom.checked ? "custom" : "default",
+    audioUrl: audioUrlInput.value.trim(),
   };
 }
 
@@ -59,6 +84,8 @@ async function getEmergencySettings() {
     BG_URL_KEY,
     BG_FIT_KEY,
     CARD_OPACITY_KEY,
+    AUDIO_MODE_KEY,
+    AUDIO_URL_KEY,
   ]);
   return {
     mode: typeof data[MODE_KEY] === "string" ? data[MODE_KEY] : DEFAULT_MODE,
@@ -70,6 +97,9 @@ async function getEmergencySettings() {
       typeof data[BG_FIT_KEY] === "string" ? data[BG_FIT_KEY] : DEFAULT_BG_FIT,
     cardOpacity:
       typeof data[CARD_OPACITY_KEY] === "number" ? data[CARD_OPACITY_KEY] : DEFAULT_CARD_OPACITY,
+    audioMode:
+      typeof data[AUDIO_MODE_KEY] === "string" ? data[AUDIO_MODE_KEY] : DEFAULT_AUDIO_MODE,
+    audioUrl: typeof data[AUDIO_URL_KEY] === "string" ? data[AUDIO_URL_KEY] : "",
   };
 }
 
@@ -79,7 +109,9 @@ async function saveEmergencySettings(
   backgroundMode,
   backgroundUrl,
   backgroundFit,
-  cardOpacity
+  cardOpacity,
+  audioMode,
+  audioUrl
 ) {
   await chrome.storage.local.set({
     [MODE_KEY]: mode,
@@ -88,6 +120,8 @@ async function saveEmergencySettings(
     [BG_URL_KEY]: backgroundUrl,
     [BG_FIT_KEY]: backgroundFit,
     [CARD_OPACITY_KEY]: cardOpacity,
+    [AUDIO_MODE_KEY]: audioMode,
+    [AUDIO_URL_KEY]: audioUrl,
   });
 }
 
@@ -97,7 +131,9 @@ function applyEmergencySettings(
   backgroundMode,
   backgroundUrl,
   backgroundFit,
-  cardOpacity
+  cardOpacity,
+  audioMode,
+  audioUrl
 ) {
   const isCustom = mode === "custom";
   modeDefault.checked = !isCustom;
@@ -116,6 +152,12 @@ function applyEmergencySettings(
   const resolvedOpacity = Number.isFinite(cardOpacity) ? cardOpacity : DEFAULT_CARD_OPACITY;
   cardOpacityInput.value = String(resolvedOpacity);
   cardOpacityValue.textContent = `${resolvedOpacity}%`;
+
+  const isCustomAudio = audioMode === "custom";
+  audioDefault.checked = !isCustomAudio;
+  audioCustom.checked = isCustomAudio;
+  audioUrlInput.value = audioUrl || "";
+  audioUrlInput.disabled = !isCustomAudio;
 }
 
 saveMessageButton.addEventListener("click", async () => {
@@ -126,6 +168,8 @@ saveMessageButton.addEventListener("click", async () => {
     backgroundUrl,
     backgroundFit,
     cardOpacity,
+    audioMode,
+    audioUrl,
   } = collectPreviewSettings();
 
   if (mode === "custom" && !message) {
@@ -143,9 +187,32 @@ saveMessageButton.addEventListener("click", async () => {
     return;
   }
 
+  if (audioMode === "custom" && !audioUrl) {
+    setStatus("Enter a SoundCloud URL or switch to default.", true);
+    return;
+  }
+
   try {
-    await saveEmergencySettings(mode, message, backgroundMode, backgroundUrl, backgroundFit, cardOpacity);
-    applyEmergencySettings(mode, message, backgroundMode, backgroundUrl, backgroundFit, cardOpacity);
+    await saveEmergencySettings(
+      mode,
+      message,
+      backgroundMode,
+      backgroundUrl,
+      backgroundFit,
+      cardOpacity,
+      audioMode,
+      audioUrl
+    );
+    applyEmergencySettings(
+      mode,
+      message,
+      backgroundMode,
+      backgroundUrl,
+      backgroundFit,
+      cardOpacity,
+      audioMode,
+      audioUrl
+    );
     setStatus("Emergency page settings saved.");
   } catch (error) {
     const messageText = error instanceof Error ? error.message : "Unknown error";
@@ -171,11 +238,25 @@ bgCustom.addEventListener("change", () => {
   bgFitSelect.disabled = false;
 });
 
+audioDefault.addEventListener("change", () => {
+  audioUrlInput.disabled = true;
+});
+
+audioCustom.addEventListener("change", () => {
+  audioUrlInput.disabled = false;
+});
+
 cardOpacityInput.addEventListener("input", () => {
   cardOpacityValue.textContent = `${cardOpacityInput.value}%`;
 });
 
-[modeDefault, modeCustom, messageInput, bgDefault, bgCustom, bgUrlInput, bgFitSelect, cardOpacityInput]
+if (previewScaleInput) {
+  previewScaleInput.addEventListener("input", () => {
+    applyPreviewScale(previewScaleInput.value);
+  });
+}
+
+[modeDefault, modeCustom, messageInput, bgDefault, bgCustom, bgUrlInput, bgFitSelect, cardOpacityInput, audioDefault, audioCustom, audioUrlInput]
   .filter(Boolean)
   .forEach((element) => {
     element.addEventListener("input", updatePreview);
@@ -190,8 +271,18 @@ if (previewFrame) {
 }
 
 (async () => {
-  const { mode, message, backgroundMode, backgroundUrl, backgroundFit, cardOpacity } =
+  const { mode, message, backgroundMode, backgroundUrl, backgroundFit, cardOpacity, audioMode, audioUrl } =
     await getEmergencySettings();
-  applyEmergencySettings(mode, message, backgroundMode, backgroundUrl, backgroundFit, cardOpacity);
+  applyEmergencySettings(
+    mode,
+    message,
+    backgroundMode,
+    backgroundUrl,
+    backgroundFit,
+    cardOpacity,
+    audioMode,
+    audioUrl
+  );
+  applyPreviewScale(0.85);
   updatePreview();
 })();
