@@ -1,13 +1,22 @@
 {
   "manifest_version": 3,
-  "name": "Site Redirector",
-  "description": "Redirects specified websites to a safe alternative.",
+  "name": "Faithshield",
+  "description": "Redirects users from blacklisted sites to a customizable emergency page. Intended to help users flee from lust. Developed by James Evolution, a Christian software developer.",
   "version": "1.0",
 
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Site Redirector"
+    "default_title": "Site Redirector",
+    "default_icon": {
+      "128": "logo_faithshield.png"
+    }
   },
+
+  "icons": {
+    "128": "logo_faithshield.png"
+  },
+
+  "options_page": "options.html",
 
   "incognito": "split",
 

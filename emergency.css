@@ -21,3 +21,11 @@
 .custom-message .lead {
 	font-size: 1.1rem;
 }
+
+.audio-player {
+	position: fixed;
+	top: 16px;
+	right: 16px;
+	z-index: 1000;
+	border: 0;
+}

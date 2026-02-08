@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+    <meta name="viewport" content="width=device-width">
+    <title>Amazing HTML5 Audio Player, powered by http://amazingaudioplayer.com</title>
+
+    <!-- Insert to your webpage before the </head> -->
+    <script src="audioplayerengine/jquery.js"></script>
+    <script src="audioplayerengine/amazingaudioplayer.js"></script>
+    <link rel="stylesheet" type="text/css" href="audioplayerengine/initaudioplayer-1.css">
+    <script src="audioplayerengine/initaudioplayer-1.js"></script>
+    <!-- End of head section HTML codes -->
+
+</head>
+
+<style>
+    html {
+        cursor: url('/images/hand_red_glow2.png'), auto !important;
+    }
+    div {
+        cursor: url('/images/hand_red_faded2.png'), auto !important;
+    }
+    .amazingaudioplayer-item-title {
+        cursor: url('/images/hand_red_glow2.png'), auto !important;        
+    }
+
+</style>
+
+<body>
+    <div style="margin:12px auto;">
+
+        <!-- Insert to your webpage where you want to display the audio player -->
+        <div id="amazingaudioplayer-1" style="display:block;position:relative;width:100%;max-width:300px;height:auto;margin:0px auto 0px;">
+            <ul class="amazingaudioplayer-audios" style="display:none;">
+                <li data-artist="Jeremy Soule" data-title="NWN - City Docks" data-album="" data-info="" data-image="audios/nwn_gold2.jpg" data-duration="92">
+                    <div class="amazingaudioplayer-source" data-src="audios/nwncitydocks.mp3" data-type="audio/mpeg"></div>
+                </li>
+                <li data-artist="Jeremy Soule" data-title="NWN - Slum District" data-album="" data-info="" data-image="audios/nwn_mage.jpg" data-duration="95">
+                    <div class="amazingaudioplayer-source" data-src="audios/nwnslum.mp3" data-type="audio/mpeg"></div>
+                </li>
+                <li data-artist="Jeremy Soule" data-title="NWN - Main Theme" data-album="" data-info="" data-image="audios/nwn_default.jpg" data-duration="146">
+                    <div class="amazingaudioplayer-source" data-src="audios/nwnmain.mp3" data-type="audio/mpeg"></div>
+                </li>
+            </ul>
+            <div class="amazingaudioplayer-engine"><a href="http://amazingaudioplayer.com" title="audio player for website">jquery music player</a></div>
+        </div>
+        <!-- End of body section HTML codes -->
+
+    </div>
+</body>
+
+</html>

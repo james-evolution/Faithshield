@@ -15,11 +15,14 @@
                 <div class="col-12 col-md-10 col-lg-8 col-xl-6">
                     <div class="card bg-dark text-light border-secondary shadow-lg">
                         <div class="card-body p-4 p-md-5">
+
+                            <!-- Custom Message-->
                             <div id="custom-message" class="custom-message" hidden>
                                 <h1 class="display-6 fw-semibold mb-3">Pause, please.</h1>
                                 <p id="custom-text" class="lead mb-4"></p>
                             </div>
 
+                            <!-- Default Message -->
                             <div id="default-message">
                                 <h1 class="display-5 fw-semibold mb-4">Pause, please.</h1>
                                 <p class="mb-2">You don’t actually want to be here, do you?</p>
@@ -73,13 +76,17 @@
                                     This urge will pass. Go do something else for a while. You can do this. You are stronger
                                     than you think. You are not alone. The Lord is with you.
                                 </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                            </div> <!-- End default message -->
+                        </div> <!-- End card body -->
+                    </div> <!-- End card -->
+
+                    <iframe class="audio-player" src="audioplayer.html" width="400" height="200" border="0" scrolling="no" frameBorder="0"></iframe>
+                    
+                </div> <!-- End column -->
+            </div> <!-- End row -->
+        </div> <!-- End container -->
     </main>
+
 
     <script src="emergency.js"></script>
 </body>

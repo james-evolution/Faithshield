@@ -2,7 +2,6 @@
 
 :root {
   color-scheme: light;
-  --panel-bg: #121923;
   --panel-border: #263141;
   --panel-glow: rgba(12, 18, 26, 0.6);
   --field-bg: #0f151e;
@@ -16,17 +15,16 @@ body {
   font-family: "Space Grotesk", "Segoe UI", sans-serif;
 }
 
-.popup-shell {
-  min-width: 360px;
-  width: 520px;
+.options-shell {
+  min-height: 100vh;
 }
 
 .brand-title {
-  font-size: 28px;
-  letter-spacing: 4px;
+  font-size: 36px;
+  letter-spacing: 6px;
   font-weight: 600;
   color: #e7edf2;
-  text-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  text-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .card {
@@ -68,22 +66,4 @@ body {
 .form-check-input:checked {
   background-color: #5ce1b5;
   border-color: #5ce1b5;
-}
-
-.list-group-item {
-  background: transparent;
-  color: #e7edf2;
-}
-
-.default-badge {
-  margin-left: auto;
-}
-
-#site-list {
-  max-height: 140px;
-  overflow-y: auto;
-}
-
-#status {
-  min-height: 18px;
 }

@@ -2,19 +2,37 @@
 const STORAGE_KEY = "blacklistEntries";
 const NEXT_ID_KEY = "nextRuleId";
 const RULE_ID_START = 1000;
-const MODE_KEY = "emergencyMode";
-const MESSAGE_KEY = "customEmergencyMessage";
-const DEFAULT_MODE = "default";
-
+const SOURCE_SEED = "seed";
+const SOURCE_USER = "user";
+const DEFAULT_BLACKLIST =
+    [
+        "xvideos.com",
+        "xhamster.com",
+        "xnxx.com",
+        "youporn.com",
+        "redtube.com",
+        "tub8e.com",
+        "ixxx.com",
+        "porn.com",
+        "spankbang.com",
+        "beeg.com",
+        "eporner.com",
+        "youjizz.com",
+        "pornhubpremium.com",
+        "chaturbate.com",
+        "stripchat.com",
+        "onlyfans.com",
+        "manyvids.com",
+        "tnaflix.com",
+        "pornhubthumbnails.com"
+    ];
 const form = document.getElementById("add-form");
 const input = document.getElementById("site-input");
 const list = document.getElementById("site-list");
+const defaultList = document.getElementById("default-site-list");
 const count = document.getElementById("count");
 const status = document.getElementById("status");
-const modeDefault = document.getElementById("mode-default");
-const modeCustom = document.getElementById("mode-custom");
-const messageInput = document.getElementById("message-input");
-const saveMessageButton = document.getElementById("save-message");
+const openSettingsButton = document.getElementById("open-settings");
 
 // Surface user-facing status in the popup.
 function setStatus(message, isError = false) {
@@ -100,6 +118,86 @@ async function saveEntries(entries, nextId) {
     });
 }
 
+async function seedDefaultBlacklist() {
+    const { entries, nextId } = await getStoredEntries();
+    if (DEFAULT_BLACKLIST.length === 0) {
+        return { entries, nextId };
+    }
+
+    const domains = DEFAULT_BLACKLIST
+        .map((domain) => normalizeDomain(domain))
+        .filter((domain) => isValidDomain(domain));
+    const uniqueDomains = [...new Set(domains)];
+    if (!uniqueDomains.length) {
+        return { entries, nextId };
+    }
+
+    const defaultDomainSet = new Set(uniqueDomains);
+    const normalizedEntries = entries.map((entry) => {
+        const normalizedDomain = normalizeDomain(entry.domain) || entry.domain;
+        const source = entry.source || (defaultDomainSet.has(normalizedDomain) ? SOURCE_SEED : SOURCE_USER);
+        return {
+            ...entry,
+            domain: normalizedDomain,
+            source,
+            addedAt: typeof entry.addedAt === "number" ? entry.addedAt : 0,
+        };
+    });
+
+    const existingDomains = new Set(normalizedEntries.map((entry) => entry.domain));
+    const domainsToAdd = uniqueDomains.filter((domain) => !existingDomains.has(domain));
+    if (!domainsToAdd.length && normalizedEntries === entries) {
+        return { entries: normalizedEntries, nextId };
+    }
+
+    let currentId = nextId;
+    const rules = [];
+    const newEntries = [];
+
+    domainsToAdd.forEach((domain) => {
+        rules.push({
+            id: currentId,
+            priority: 1,
+            action: {
+                type: "redirect",
+                redirect: { extensionPath: "/emergency.html" },
+            },
+            condition: {
+                urlFilter: toUrlFilter(domain),
+                resourceTypes: ["main_frame"],
+            },
+        });
+        newEntries.push({
+            id: currentId,
+            domain,
+            source: SOURCE_SEED,
+            addedAt: 0,
+        });
+        currentId += 1;
+    });
+
+    await updateDynamicRules({
+        addRules: rules,
+        removeRuleIds: [],
+    });
+
+    const updatedEntries = [...normalizedEntries, ...newEntries];
+    await saveEntries(updatedEntries, currentId);
+    return { entries: updatedEntries, nextId: currentId };
+}
+
+function isSeedEntry(entry) {
+    if (entry.source === SOURCE_SEED) {
+        return true;
+    }
+
+    const domain = normalizeDomain(entry.domain) || entry.domain;
+    return DEFAULT_BLACKLIST
+        .map((seed) => normalizeDomain(seed))
+        .filter((seed) => seed)
+        .includes(domain);
+}
+
 // Render the current blacklist into the popup UI.
 function renderEntries(entries) {
     list.innerHTML = "";
@@ -109,13 +207,29 @@ function renderEntries(entries) {
         empty.textContent = "No blocked sites yet.";
         list.appendChild(empty);
     } else {
-        entries.forEach((entry) => {
+        const userEntries = entries.filter((entry) => !isSeedEntry(entry));
+        if (!userEntries.length) {
+            const empty = document.createElement("li");
+            empty.className = "list-group-item bg-dark text-secondary border-secondary small";
+            empty.textContent = "No custom blocked sites yet.";
+            list.appendChild(empty);
+        }
+
+        const sortedEntries = userEntries.sort((a, b) => {
+            const timeA = typeof a.addedAt === "number" ? a.addedAt : 0;
+            const timeB = typeof b.addedAt === "number" ? b.addedAt : 0;
+            if (timeA !== timeB) {
+                return timeB - timeA;
+            }
+            return b.id - a.id;
+        });
+
+        sortedEntries.forEach((entry) => {
             const item = document.createElement("li");
             item.className = "list-group-item d-flex justify-content-between align-items-center bg-dark text-light border-secondary";
             const label = document.createElement("span");
             label.className = "small text-truncate";
             label.textContent = entry.domain;
-
             const removeBtn = document.createElement("button");
             removeBtn.type = "button";
             removeBtn.className = "btn btn-outline-danger btn-sm";
@@ -127,33 +241,44 @@ function renderEntries(entries) {
         });
     }
 
-    count.textContent = String(entries.length) + " sites blacklisted";
+    const userCount = entries.filter((entry) => !isSeedEntry(entry)).length;
+    count.textContent = String(userCount) + " sites blacklisted";
+    renderDefaultEntries(entries);
 }
 
-// Load emergency page settings for mode and custom text.
-async function getEmergencySettings() {
-    const data = await chrome.storage.local.get([MODE_KEY, MESSAGE_KEY]);
-    return {
-        mode: typeof data[MODE_KEY] === "string" ? data[MODE_KEY] : DEFAULT_MODE,
-        message: typeof data[MESSAGE_KEY] === "string" ? data[MESSAGE_KEY] : "",
-    };
-}
+function renderDefaultEntries(entries) {
+    if (!defaultList) {
+        return;
+    }
 
-// Persist emergency page settings.
-async function saveEmergencySettings(mode, message) {
-    await chrome.storage.local.set({
-        [MODE_KEY]: mode,
-        [MESSAGE_KEY]: message,
+    defaultList.innerHTML = "";
+    const defaultEntries = entries
+        .filter((entry) => isSeedEntry(entry))
+        .sort((a, b) => a.domain.localeCompare(b.domain));
+
+    if (!defaultEntries.length) {
+        const empty = document.createElement("li");
+        empty.className = "list-group-item bg-dark text-secondary border-secondary small";
+        empty.textContent = "No default sites configured.";
+        defaultList.appendChild(empty);
+        return;
+    }
+
+    defaultEntries.forEach((entry) => {
+        const item = document.createElement("li");
+        item.className = "list-group-item d-flex align-items-center bg-dark text-info border-secondary";
+
+        const label = document.createElement("span");
+        label.className = "small text-truncate";
+        label.textContent = entry.domain;
+
+        const badge = document.createElement("span");
+        badge.className = "badge text-bg-info text-dark default-badge";
+        badge.textContent = "Default";
+
+        item.append(label, badge);
+        defaultList.appendChild(item);
     });
-}
-
-// Sync the emergency settings UI with stored values.
-function applyEmergencySettings(mode, message) {
-    const isCustom = mode === "custom";
-    modeDefault.checked = !isCustom;
-    modeCustom.checked = isCustom;
-    messageInput.value = message || "";
-    messageInput.disabled = !isCustom;
 }
 
 // Add a new domain to storage and to dynamic redirect rules.
@@ -184,7 +309,10 @@ async function addEntry(domain) {
         removeRuleIds: [],
     });
 
-    const updatedEntries = [...entries, { id: ruleId, domain }];
+    const updatedEntries = [
+        { id: ruleId, domain, source: SOURCE_USER, addedAt: Date.now() },
+        ...entries,
+    ];
     await saveEntries(updatedEntries, ruleId + 1);
     renderEntries(updatedEntries);
     setStatus("Added to blacklist.");
@@ -193,6 +321,11 @@ async function addEntry(domain) {
 // Remove a domain by ID from storage and dynamic redirect rules.
 async function removeEntry(id) {
     const { entries, nextId } = await getStoredEntries();
+    const entry = entries.find((item) => item.id === id);
+    if (entry && isSeedEntry(entry)) {
+        setStatus("Default entries cannot be removed.", true);
+        return;
+    }
     const updatedEntries = entries.filter((entry) => entry.id !== id);
 
     await updateDynamicRules({
@@ -226,40 +359,17 @@ form.addEventListener("submit", async (event) => {
     }
 });
 
-// Handle emergency page setting changes.
-saveMessageButton.addEventListener("click", async () => {
-    const mode = modeCustom.checked ? "custom" : "default";
-    const message = messageInput.value.trim();
-
-    if (mode === "custom" && !message) {
-        setStatus("Enter a custom message or switch to default.", true);
-        return;
-    }
-
-    try {
-        await saveEmergencySettings(mode, message);
-        applyEmergencySettings(mode, message);
-        setStatus("Emergency page settings saved.");
-    } catch (error) {
-        const messageText = error instanceof Error ? error.message : "Unknown error";
-        setStatus(`Failed to save settings: ${messageText}`, true);
-    }
-});
-
-modeDefault.addEventListener("change", () => {
-    messageInput.disabled = true;
-});
-
-modeCustom.addEventListener("change", () => {
-    messageInput.disabled = false;
-});
+// Open the extension options page for emergency settings.
+if (openSettingsButton) {
+    openSettingsButton.addEventListener("click", () => {
+        if (chrome.runtime.openOptionsPage) {
+            chrome.runtime.openOptionsPage();
+        }
+    });
+}
 
 // Initial render on popup load.
 (async () => {
-        const [{ entries }, { mode, message }] = await Promise.all([
-                getStoredEntries(),
-                getEmergencySettings(),
-        ]);
-        renderEntries(entries);
-        applyEmergencySettings(mode, message);
+    const { entries } = await seedDefaultBlacklist();
+    renderEntries(entries);
 })();
