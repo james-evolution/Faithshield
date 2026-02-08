@@ -101,3 +101,126 @@ body {
   background-color: #5ce1b5;
   border-color: #5ce1b5;
 }
+
+.keyword-chip-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 8px;
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.keyword-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  max-width: 240px;
+  padding: 8px 24px 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--panel-border);
+  background: rgba(15, 21, 30, 0.85);
+  color: #e7edf2;
+  font-size: 0.85rem;
+}
+
+.keyword-chip-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.keyword-chip-remove {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #9fb0c0;
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.keyword-chip-remove:hover {
+  color: #f07178;
+}
+
+.settings-section {
+  margin-top: 18px;
+}
+
+.settings-section h2 {
+  color: #8bd4ff;
+}
+
+.emergency-settings-layout {
+  align-items: stretch;
+}
+
+.settings-panel {
+  height: 100%;
+}
+
+.preview-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--panel-border);
+  background: rgba(10, 14, 20, 0.6);
+}
+
+.preview-frame-wrap {
+  flex: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--panel-border);
+  background: #0b1016;
+}
+
+.preview-frame {
+  display: block;
+  width: 131.58%;
+  height: 131.58%;
+  border: 0;
+  transform: scale(0.76);
+  transform-origin: top left;
+  overflow: hidden;
+}
+
+@media (max-width: 991.98px) {
+  .preview-panel {
+    min-height: 560px;
+  }
+}
+
+.emergency-settings-container {
+  max-width: 1400px;
+  width: 80%;
+}
+
+@media (max-width: 1199.98px) {
+  .emergency-settings-container {
+    width: 92%;
+  }
+}
+
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 30px;
+	background: -webkit-gradient(linear, left top, left bottom, from(darkgray), to(black));
+	box-shadow: inset 2px 2px 2px rgba(255, 255, 255, .25), inset -2px -2px 2px rgba(0, 0, 0, .25);
+}
+
+::-webkit-scrollbar-track {
+	background-color: #fff;
+	background: linear-gradient(to right, #201c29, #201c29 1px, #100e17 1px, #100e17);
+}

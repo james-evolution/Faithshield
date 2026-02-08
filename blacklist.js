@@ -241,6 +241,13 @@ function renderCustomEntries(entries) {
 
 // Render entries with newest-first ordering.
 function renderEntryList(list, entries, entryType) {
+  const isKeyword = entryType === ENTRY_TYPE_KEYWORD;
+  if (isKeyword) {
+    list.classList.add("keyword-chip-list");
+  } else {
+    list.classList.remove("keyword-chip-list");
+  }
+
   const sortedEntries = [...entries].sort((a, b) => {
     const timeA = typeof a.addedAt === "number" ? a.addedAt : 0;
     const timeB = typeof b.addedAt === "number" ? b.addedAt : 0;
@@ -252,19 +259,29 @@ function renderEntryList(list, entries, entryType) {
 
   sortedEntries.forEach((entry) => {
     const item = document.createElement("li");
-    item.className = "list-group-item d-flex justify-content-between align-items-center bg-dark text-light border-secondary";
 
     const label = document.createElement("span");
-    label.className = "small text-truncate";
     label.textContent = getEntryValue(entry);
 
     const removeBtn = document.createElement("button");
     removeBtn.type = "button";
-    removeBtn.className = "btn btn-outline-danger btn-sm";
-    removeBtn.textContent = "Remove";
     removeBtn.addEventListener("click", () => removeEntry(entry.id));
 
-    item.append(label, removeBtn);
+    if (isKeyword) {
+      item.className = "keyword-chip";
+      label.className = "keyword-chip-label";
+      removeBtn.className = "keyword-chip-remove";
+      removeBtn.textContent = "x";
+      removeBtn.setAttribute("aria-label", "Remove keyword");
+      item.append(label, removeBtn);
+    } else {
+      item.className = "list-group-item d-flex justify-content-between align-items-center bg-dark text-light border-secondary";
+      label.className = "small text-truncate";
+      removeBtn.className = "btn btn-outline-danger btn-sm";
+      removeBtn.textContent = "Remove";
+      item.append(label, removeBtn);
+    }
+
     list.appendChild(item);
   });
 }

@@ -20,43 +20,106 @@
     </nav>
 
     <main class="options-shell py-4">
-        <div class="container">
+        <div class="container-fluid px-4 emergency-settings-container">
             <div class="card border-secondary shadow-sm">
                 <div class="card-body">
                     <div
                         class="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-2 mb-3">
                         <div>
                             <h1 class="h4 mb-1">Emergency Page Settings</h1>
-                            <p class="small text-secondary mb-0">Choose the message shown when a blocked site redirects.
-                            </p>
+                            <p class="small text-secondary mb-0">Customize the appearance of the emergency page for site redirects.</p>
                         </div>
                         <span id="status" class="small text-warning" role="status" aria-live="polite"></span>
                     </div>
 
-                    <div class="d-grid gap-2 mb-3">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="emergency-mode" id="mode-default"
-                                value="default" />
-                            <label class="form-check-label" for="mode-default">Use the default emergency page
-                                message</label>
+                    <div class="row g-4 emergency-settings-layout">
+                        <div class="col-12 col-lg-5">
+                            <div class="settings-panel">
+                                <div class="settings-section">
+                                    <h2 class="h6 mb-2">Message</h2>
+                                    <div class="d-grid gap-2 mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="emergency-mode" id="mode-default"
+                                            value="default" />
+                                        <label class="form-check-label" for="mode-default">Use the default emergency page
+                                            message</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="emergency-mode" id="mode-custom"
+                                            value="custom" />
+                                        <label class="form-check-label" for="mode-custom">Use a custom message</label>
+                                    </div>
+                                    </div>
+
+                                    <label class="form-label small text-secondary" for="message-input">Custom message</label>
+                                    <textarea class="form-control" id="message-input" rows="5"
+                                        placeholder="Type the message you want to see."></textarea>
+                                </div>
+
+                                <hr class="border-secondary my-3" />
+
+                                <div class="settings-section">
+                                    <h2 class="h6 mb-2">Background</h2>
+                                    <div class="d-grid gap-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="background-mode" id="bg-default"
+                                                value="default" />
+                                            <label class="form-check-label" for="bg-default">Use default background</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="background-mode" id="bg-custom"
+                                                value="custom" />
+                                            <label class="form-check-label" for="bg-custom">Use a custom image</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row g-3 align-items-end mt-1">
+                                        <div class="col-12">
+                                            <label class="form-label small text-secondary" for="bg-url">Background image URL</label>
+                                            <input class="form-control" id="bg-url" type="url"
+                                                placeholder="https://example.com/image.jpg" />
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label small text-secondary" for="bg-fit">Image fit</label>
+                                            <select id="bg-fit" class="form-select">
+                                                <option value="cover">Cover</option>
+                                                <option value="contain">Contain</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="border-secondary my-3" />
+
+                                <div class="settings-section">
+                                    <h2 class="h6 mb-2">Card styling</h2>
+                                    <label class="form-label small text-secondary" for="card-opacity">
+                                        Card transparency
+                                        <span id="card-opacity-value">40%</span>
+                                    </label>
+                                    <input class="form-range" id="card-opacity" type="range" min="0" max="100" step="5" />
+                                    <div class="form-text text-secondary">0% is fully transparent, 100% is solid black.</div>
+                                </div>
+
+                                <div class="d-flex flex-wrap align-items-center gap-2 mt-3 mb-2">
+                                    <button id="save-message" type="button" class="btn btn-outline-warning">Save changes</button>
+                                </div>
+                                <span class="small text-secondary">Changes are saved in extension storage.</span>
+                            </div>
                         </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="emergency-mode" id="mode-custom"
-                                value="custom" />
-                            <label class="form-check-label" for="mode-custom">Use a custom message</label>
+
+                        <div class="col-12 col-lg-7">
+                            <div class="preview-panel">
+                                <div class="d-flex align-items-center justify-content-between mb-2">
+                                    <h2 class="h6 mb-0">Live preview</h2>
+                                    <a class="btn btn-sm btn-outline-info" href="emergency.html" target="_blank" rel="noopener">Full screen</a>
+                                </div>
+                                <div class="preview-frame-wrap">
+                                    <iframe id="preview-frame" class="preview-frame" title="Emergency page preview" scrolling="no"></iframe>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <label class="form-label small text-secondary" for="message-input">Custom message</label>
-                    <textarea class="form-control" id="message-input" rows="5"
-                        placeholder="Type the message you want to see."></textarea>
-
-                    <div class="d-flex flex-wrap align-items-center gap-2 mt-3 mb-3">
-                        <button id="save-message" type="button" class="btn btn-outline-warning">Save changes</button>
-                        <a class="btn btn-outline-info" href="emergency.html" target="_blank" rel="noopener">Preview
-                            emergency page</a>
-                    </div>
-                    <span class="small text-secondary">Changes are saved in extension storage.</span>
                 </div>
             </div>
         </div>

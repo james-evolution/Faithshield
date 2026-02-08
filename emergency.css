@@ -1,7 +1,86 @@
+body {
+	background: radial-gradient(circle at top, #2e4057 0%, #0b1016 70%);
+}
+
+.brand-mark {
+	position: fixed;
+	top: 0px;
+	left: 16px;
+	margin: 0;
+	z-index: 900;
+	letter-spacing: 6px;
+	font-weight: 600;
+	color: #e7edf2;
+	text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9), 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+
+body.preview-mode .brand-mark,
+body.preview-mode .audio-player {
+	display: none;
+}
+
 .verse-glow {
 	color: #f5d56b;
 	font-style: italic;
 	text-shadow: 0 0 6px rgba(245, 213, 107, 0.45), 0 0 16px rgba(245, 213, 107, 0.3);
+}
+
+.verse-glow[data-bs-toggle="tooltip"] {
+	cursor: pointer;
+}
+
+.verse-ref {
+	white-space: nowrap;
+	text-shadow: none;
+	font-style: normal;
+}
+
+.tooltip-fallback {
+	position: relative;
+	display: inline-block;
+}
+
+.tooltip-fallback::after,
+.tooltip-fallback::before {
+	opacity: 0;
+	transform: translateX(-4px) translateY(-50%);
+	transition: opacity 160ms ease, transform 160ms ease;
+	pointer-events: none;
+}
+
+.tooltip-fallback::after {
+	content: attr(data-tooltip);
+	position: absolute;
+	left: calc(100% + 12px);
+	top: 50%;
+	background: rgba(12, 18, 26, 0.96);
+	color: #e7edf2;
+	padding: 8px 10px;
+	border-radius: 8px;
+	font-size: 0.85rem;
+	line-height: 1.2;
+	white-space: nowrap;
+	z-index: 20;
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35);
+}
+
+.tooltip-fallback::before {
+	content: "";
+	position: absolute;
+	left: calc(100% + 2px);
+	top: 50%;
+	border-width: 6px;
+	border-style: solid;
+	border-color: transparent rgba(12, 18, 26, 0.96) transparent transparent;
+	z-index: 21;
+}
+
+.tooltip-fallback:hover::after,
+.tooltip-fallback:hover::before,
+.tooltip-fallback:focus-visible::after,
+.tooltip-fallback:focus-visible::before {
+	opacity: 1;
+	transform: translateX(0) translateY(-50%);
 }
 
 .warning-glow {
@@ -24,8 +103,23 @@
 
 .audio-player {
 	position: fixed;
-	top: 16px;
+	bottom: 16px;
 	right: 16px;
 	z-index: 1000;
+	width: 360px;
+	max-width: 90vw;
+}
+
+.audio-player iframe {
+	display: block;
+	width: 100%;
 	border: 0;
+}
+
+.audio-player-credit {
+	margin-top: 4px;
+}
+
+.card {
+	background-color: rgba(0, 0, 0, var(--card-alpha, 0.4)) !important;
 }

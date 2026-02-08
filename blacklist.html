@@ -29,7 +29,29 @@
             <span id="status" class="small text-warning" role="status" aria-live="polite"></span>
           </div>
 
-          <div class="mb-4">
+          <!-- Blocked Keywords -->
+          <div class="mb-4 settings-section">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+              <h2 class="h6 mb-0">Blocked keywords</h2>
+              <span id="keyword-count" class="badge text-bg-secondary">0</span>
+            </div>
+
+            <form id="add-keyword-form" class="mb-3">
+              <label class="form-label small text-secondary" for="keyword-input">Keyword or phrase</label>
+              <div class="input-group">
+                <input class="form-control" id="keyword-input" name="keyword" type="text" placeholder="example keyword" autocomplete="off" />
+                <button class="btn btn-success" type="submit">Add</button>
+              </div>
+              <div class="form-text text-secondary">Blocks searches on common engines when the keyword appears.</div>
+            </form>
+            
+            <ul id="custom-keyword-list" class="list-group list-group-flush"></ul>
+          </div>
+
+          <hr class="border-secondary my-3" />
+
+          <!-- Blocked Sites (custom) -->
+          <div class="mb-4 settings-section">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <h2 class="h6 mb-0">Blocked sites (custom)</h2>
               <span id="custom-count" class="badge text-bg-secondary">0</span>
@@ -47,27 +69,10 @@
             <ul id="custom-site-list" class="list-group list-group-flush"></ul>
           </div>
 
-          <div class="mb-4">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <h2 class="h6 mb-0">Blocked keywords (custom)</h2>
-              <span id="keyword-count" class="badge text-bg-secondary">0</span>
-            </div>
-
-            <form id="add-keyword-form" class="mb-3">
-              <label class="form-label small text-secondary" for="keyword-input">Keyword or phrase</label>
-              <div class="input-group">
-                <input class="form-control" id="keyword-input" name="keyword" type="text" placeholder="example keyword" autocomplete="off" />
-                <button class="btn btn-success" type="submit">Add</button>
-              </div>
-              <div class="form-text text-secondary">Blocks searches on common engines when the keyword appears.</div>
-            </form>
-
-            <ul id="custom-keyword-list" class="list-group list-group-flush"></ul>
-          </div>
-
           <hr class="border-secondary my-3" />
 
-          <div>
+          <!-- Blocked Sites (default) -->
+          <div class="settings-section">
             <div class="d-flex align-items-center justify-content-between mb-2">
               <h2 class="h6 mb-0">Blocked sites (default)</h2>
               <span id="default-count" class="badge text-bg-secondary">0</span>
