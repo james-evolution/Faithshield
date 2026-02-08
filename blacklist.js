@@ -134,7 +134,7 @@ function renderCustomEntries(entries) {
     customList.appendChild(item);
   });
 
-  customCount.textContent = String(sortedEntries.length) + " custom sites blacklisted.";
+  customCount.textContent = String(sortedEntries.length);
 }
 
 function renderDefaultEntries(entries) {
@@ -168,7 +168,7 @@ function renderDefaultEntries(entries) {
       defaultList.appendChild(item);
     });
 
-  defaultCount.textContent = String(domains.length) + " default sites blacklisted.";
+  defaultCount.textContent = String(domains.length);
 }
 
 async function addEntry(domain) {
