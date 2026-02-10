@@ -8,6 +8,7 @@ const AUDIO_MODE_KEY = "emergencyAudioMode";
 const AUDIO_URL_KEY = "emergencyAudioUrl";
 const DEFAULT_MESSAGE = "Take a moment to pause and choose a better path.";
 const DEFAULT_BG_MODE = "default";
+const DEFAULT_BG_URL = "https://images.unsplash.com/photo-1485470733090-0aae1788d5af?q=80&w=1217&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 const DEFAULT_BG_FIT = "cover";
 const DEFAULT_CARD_OPACITY = 40;
 const DEFAULT_AUDIO_MODE = "default";
@@ -87,15 +88,12 @@ function applySettings(
 
   if (backgroundMode === "custom" && backgroundUrl) {
     document.body.style.backgroundImage = `url("${backgroundUrl}")`;
-    document.body.style.backgroundSize = backgroundFit || DEFAULT_BG_FIT;
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundRepeat = "no-repeat";
   } else {
-    document.body.style.backgroundImage = "";
-    document.body.style.backgroundSize = "";
-    document.body.style.backgroundPosition = "";
-    document.body.style.backgroundRepeat = "";
+    document.body.style.backgroundImage = `url("${DEFAULT_BG_URL}")`;
   }
+  document.body.style.backgroundSize = backgroundFit || DEFAULT_BG_FIT;
+  document.body.style.backgroundPosition = "center";
+  document.body.style.backgroundRepeat = "no-repeat";
 
   const resolvedOpacity = Number.isFinite(cardOpacity) ? cardOpacity : DEFAULT_CARD_OPACITY;
   document.documentElement.style.setProperty("--card-alpha", String(resolvedOpacity / 100));
